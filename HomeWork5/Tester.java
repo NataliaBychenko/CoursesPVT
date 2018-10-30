@@ -1,6 +1,5 @@
-package HomeWork5;
-/*
- * Создать класс Tester со следующими полями:
+﻿package HomeWork5;
+/*Создать класс Tester со следующими полями:
  -name
  -surname
  -experienceInYears
@@ -11,7 +10,6 @@ package HomeWork5;
  2. Написать 3 любых перегруженных метода в этом классе
  3. Написать статический метод и показать пример его корректного вызова в другом
  классе
- *
  */
 
 public class Tester {
