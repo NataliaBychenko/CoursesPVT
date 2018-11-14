@@ -5,16 +5,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
+import org.testng.annotations.*;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-public class HomeWork18Test {
 
+public class BookingPageTest {
     WebDriver driver;
     String bookingUrl = "https://www.booking.com";
 
@@ -70,25 +66,24 @@ public class HomeWork18Test {
      * 3. Отфильтровать отели с максимальным рейтингом.
      * 4. Открыть страницу с первым таким отелем и проверить, что его рейтинг >= 9.
      */
-    @Test(priority = 1)
+    @Test (priority = 1)
     public void findBestHotelInMoscowTest() {
         goToMoscow();
         WebElement sortHotel = driver.findElement(By
                 .xpath(".//a[@data-category='review_score_and_price']"));
         sortHotel.click();
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         WebElement firstHotel = driver.findElement(By
-                .xpath("(.//a[@class='hotel_name_link url'])[1]"));
-       /* WebElement firstHotel = (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(By
-                        .xpath("(.//a[@class='hotel_name_link url'])[1]")));*/
-      //  driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
+                .xpath(".//a[@class='hotel_name_link url']"));
         firstHotel.click();
-        driver.getWindowHandle();
-        driver.switchTo().window(driver.getWindowHandle());
+        driver.switchTo().activeElement();
         Double rating = Double.valueOf(driver.findElement(By
                 .xpath(".//div[@class='bui-review-score__badge']")).getText());
-        System.out.println(rating);
-        Assert.assertTrue(rating >=9,
+        Assert.assertTrue(rating >= 9,
                 "It's not cool hotel.");
     }
 }
