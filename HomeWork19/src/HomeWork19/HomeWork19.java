@@ -98,9 +98,6 @@ public class HomeWork19 {
     private WebElement finallyBookButton;
 
     @FindBy(xpath = "//*[@id='address1']")
-    private WebElement addressBooker;
-
-    @FindBy(xpath = "//*[@id='address1']")
     private List<WebElement> addressList;
 
     @FindBy(xpath = "//*[@id='city']")
