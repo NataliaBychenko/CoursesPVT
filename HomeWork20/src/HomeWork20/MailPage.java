@@ -1,0 +1,188 @@
+package HomeWorks.HomeWork20;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
+
+public class MailPage {
+    WebDriver driver;
+
+    @FindBy(xpath = "//*[@id='PH_logoutLink']")
+    private WebElement logoutLink;
+
+    @FindBy(xpath = "//a[@data-name='link' and " +
+            "not(ancestor::div[contains(@style, 'display: none;')])]")
+    private List<WebElement> lettersList;
+
+    @FindBy(xpath = "(//div[contains(@class,'checkbox__box') " +
+            "and ancestor::div[@id='b-letters']" +
+            "and not(ancestor::div[contains(@style, 'display: none;')])])")
+    public List<WebElement> checkboxList;
+
+    @FindBy(xpath = "(//div[contains(@class, 'b-checkbox__box')])[1]")
+    public WebElement checkAll;
+
+    @FindBy(xpath = "(//div[@data-name='spam'])[1]")
+    public WebElement spamButton;
+
+    @FindBy(xpath = "(//div[@data-name='noSpam'])[1]")
+    public WebElement noSpamButton;
+
+    @FindBy(xpath = "//div[@id='b-nav_folders']//span[text()='Входящие']")
+    public WebElement incomingMailFolder;
+
+    @FindBy(xpath = "//div[@id='b-nav_folders']//span[text()='Спам']")
+    public WebElement spamFolder;
+
+    @FindBy(xpath = "(//a[@data-name='compose'])[1]")
+    private WebElement writeLetterButton;
+
+    @FindBy(xpath = "(.//*[@data-name='saveDraft'])[1]")
+    private WebElement saveLetterButton;
+
+    @FindBy(xpath = "(.//*[@data-original-name='To'])[1]")
+    private WebElement letterRecipient;
+
+    @FindBy(xpath = ".//*[@name='Subject']")
+    private WebElement topicLetter;
+
+    @FindBy(xpath = "//*[@id='tinymce']/br[1]")
+    private WebElement textLetter;
+
+    @FindBy(xpath = "//iframe")
+    public WebElement iframeTextMessage;
+
+    @FindBy(xpath = "(//div[@data-name='send'])[1]")
+    public WebElement sendButton;
+
+    @FindBy(xpath = ".//div[@class='message-sent__title']")
+    private WebElement messageSentTitle;
+
+    @FindBy(xpath = "(.//*[@data-title='Пометить флажком'])")
+    private List<WebElement> markTheFlag;
+
+    @FindBy(xpath = "//a[@data-name='link' " +
+            "and not(ancestor::div[contains(@style, 'display: none;')])]" +
+            "//div[contains(@class, 'b-flag_yes')]//b")
+    public List<WebElement> flagsList;
+
+    @FindBy(xpath = "(//a[@data-name='link' " +
+            "and not(ancestor::div[contains(@style, 'display: none;')])]" +
+            "//div[@data-bem='b-flag'])")
+    private List<WebElement> isMarkTheFlag;
+
+    @FindBy(xpath = "(//div[contains(@class, 'b-dropdown_more')])[1]")
+    public WebElement moreButtons;
+
+    @FindBy(xpath = "(//a[@data-name='flag_no'])[1]")
+    public WebElement removeFlags;
+
+
+    public MailPage(WebDriver webdriver) {
+        PageFactory.initElements(webdriver, this);
+        driver = webdriver;
+    }
+
+    public void waiting(WebDriver driver) {
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions
+                .invisibilityOfAllElements(lettersList));
+    }
+
+    public void clickCheckbox(int index) {
+        try {
+            checkboxList.get(index).click();
+        } catch (IndexOutOfBoundsException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public void clickSpamButton() {
+        spamButton.click();
+    }
+
+    public void clickNoSpamButton() {
+        noSpamButton.click();
+    }
+
+    public void moveLetterToSpam(int index) {
+        clickCheckbox(index);
+        clickSpamButton();
+    }
+
+    public void extractLetterFromSpam(int index) {
+        spamFolder.click();
+        clickCheckbox(index);
+        clickNoSpamButton();
+    }
+
+    public void goToIncomingFolder() {
+        incomingMailFolder.click();
+        driver.navigate().refresh();
+    }
+
+    public void goToSpam() {
+        spamFolder.click();
+        driver.navigate().refresh();
+    }
+
+    public void sentLetter(String receivers, String topic, String text) {
+        writeLetterButton.click();
+        letterRecipient.sendKeys(receivers);
+        topicLetter.sendKeys(topic);
+        enterMessage(text);
+        sendButton.click();
+    }
+
+    public void enterMessage(String message) {
+        driver.switchTo().frame(iframeTextMessage)
+                .findElement(By.xpath("//body"))
+                .sendKeys(message);
+        //driver.findElement(By.xpath("//body")).sendKeys(message);
+        driver.switchTo().defaultContent();
+    }
+
+    public String getMessageSentTitle() {
+        return messageSentTitle.getText();
+    }
+
+    public List<WebElement> getLettersList() {
+        return lettersList;
+    }
+
+
+    public void markFlagOfFirst(int count) {
+        List<WebElement> messages = lettersList;
+        for (int row = 0; row < count; row++) {
+            (messages.get(row)).findElement(By.xpath(".//div[@data-act='flag']")).click();
+        }
+    }
+
+    public boolean isMarkTheFlag(int index) {
+        List<WebElement> messages = lettersList;
+        for (int row = 0; row < index; row++) {
+            (messages.get(row)).findElement(By.xpath(".//div[@data-act='flag']")).click();
+        }
+
+        System.out.println("size " + isMarkTheFlag.size());
+        System.out.println("mark " + isMarkTheFlag.get(index));
+        return isMarkTheFlag.get(index)
+                .getAttribute("data-tittle")
+                .contains("Снять флажок");
+    }
+
+    public void removeAllFlag() {
+        checkAll.click();
+        moreButtons.click();
+        removeFlags.click();
+    }
+
+    public List<WebElement> getMarkTheFlag() {
+        return flagsList;
+    }
+}
