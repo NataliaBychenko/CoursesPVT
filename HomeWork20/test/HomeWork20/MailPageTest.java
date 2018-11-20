@@ -1,10 +1,9 @@
 package HomeWork20;
 
-import HomeWorks.HomeWork20.MailPage;
-import HomeWorks.HomeWork20.LoginPage;
-
 import java.util.concurrent.TimeUnit;
 
+import HomeWorks.HomeWork20.LoginPage;
+import HomeWorks.HomeWork20.MailPage;
 import org.testng.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -21,7 +20,7 @@ public class MailPageTest {
     private static final String EMAIL = "my_test_email2018";
     private static final String PASSWORD = "p1a2s3s";
     private static final int TIMEOUT_FOR_IMPLICITLY = 10;
-    private static final int TIMEOUT_FOR_LOAD = 60;
+    private static final int TIMEOUT_FOR_LOAD = 30;
 
     @BeforeClass
     public void beforeClass() {

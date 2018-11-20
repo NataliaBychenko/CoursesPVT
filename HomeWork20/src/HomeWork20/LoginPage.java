@@ -18,7 +18,8 @@ public class LoginPage
     @FindBy(xpath = "//*[@id='mailbox:submit']/input")
     private WebElement buttonEnter;
 
-
+    @FindBy(xpath = "//*[@id='PH_logoutLink']")
+    private WebElement logoutLink;
 
     public LoginPage(WebDriver webdriver)
     {
@@ -38,10 +39,10 @@ public class LoginPage
         buttonEnter.click();
     }
 
-    /*public boolean isLogoutLinkPresents()
+    public boolean isLogoutLinkPresents()
     {
         return logoutLink.isDisplayed();
     }
-*/
+
 
 }

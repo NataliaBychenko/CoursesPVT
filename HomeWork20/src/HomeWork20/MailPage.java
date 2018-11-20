@@ -5,16 +5,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
+
 public class MailPage {
     WebDriver driver;
-
-    @FindBy(xpath = "//*[@id='PH_logoutLink']")
-    private WebElement logoutLink;
 
     @FindBy(xpath = "//a[@data-name='link' and " +
             "not(ancestor::div[contains(@style, 'display: none;')])]")
@@ -43,17 +39,11 @@ public class MailPage {
     @FindBy(xpath = "(//a[@data-name='compose'])[1]")
     private WebElement writeLetterButton;
 
-    @FindBy(xpath = "(.//*[@data-name='saveDraft'])[1]")
-    private WebElement saveLetterButton;
-
     @FindBy(xpath = "(.//*[@data-original-name='To'])[1]")
     private WebElement letterRecipient;
 
     @FindBy(xpath = ".//*[@name='Subject']")
     private WebElement topicLetter;
-
-    @FindBy(xpath = "//*[@id='tinymce']/br[1]")
-    private WebElement textLetter;
 
     @FindBy(xpath = "//iframe")
     public WebElement iframeTextMessage;
@@ -64,18 +54,10 @@ public class MailPage {
     @FindBy(xpath = ".//div[@class='message-sent__title']")
     private WebElement messageSentTitle;
 
-    @FindBy(xpath = "(.//*[@data-title='Пометить флажком'])")
-    private List<WebElement> markTheFlag;
-
     @FindBy(xpath = "//a[@data-name='link' " +
             "and not(ancestor::div[contains(@style, 'display: none;')])]" +
             "//div[contains(@class, 'b-flag_yes')]//b")
     public List<WebElement> flagsList;
-
-    @FindBy(xpath = "(//a[@data-name='link' " +
-            "and not(ancestor::div[contains(@style, 'display: none;')])]" +
-            "//div[@data-bem='b-flag'])")
-    private List<WebElement> isMarkTheFlag;
 
     @FindBy(xpath = "(//div[contains(@class, 'b-dropdown_more')])[1]")
     public WebElement moreButtons;
@@ -87,11 +69,6 @@ public class MailPage {
     public MailPage(WebDriver webdriver) {
         PageFactory.initElements(webdriver, this);
         driver = webdriver;
-    }
-
-    public void waiting(WebDriver driver) {
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions
-                .invisibilityOfAllElements(lettersList));
     }
 
     public void clickCheckbox(int index) {
@@ -143,7 +120,6 @@ public class MailPage {
         driver.switchTo().frame(iframeTextMessage)
                 .findElement(By.xpath("//body"))
                 .sendKeys(message);
-        //driver.findElement(By.xpath("//body")).sendKeys(message);
         driver.switchTo().defaultContent();
     }
 
@@ -155,25 +131,11 @@ public class MailPage {
         return lettersList;
     }
 
-
     public void markFlagOfFirst(int count) {
         List<WebElement> messages = lettersList;
         for (int row = 0; row < count; row++) {
             (messages.get(row)).findElement(By.xpath(".//div[@data-act='flag']")).click();
         }
-    }
-
-    public boolean isMarkTheFlag(int index) {
-        List<WebElement> messages = lettersList;
-        for (int row = 0; row < index; row++) {
-            (messages.get(row)).findElement(By.xpath(".//div[@data-act='flag']")).click();
-        }
-
-        System.out.println("size " + isMarkTheFlag.size());
-        System.out.println("mark " + isMarkTheFlag.get(index));
-        return isMarkTheFlag.get(index)
-                .getAttribute("data-tittle")
-                .contains("Снять флажок");
     }
 
     public void removeAllFlag() {
