@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Parameters>
+    <textForSearch>Ван Гог</textForSearch>
+    <recipients>my_test_email2018@mail.ru, TestTest@mail.ru</recipients>
+    <topicLetter>TestTopic.</topicLetter>
+    <textLetter>Text for text letter.</textLetter>
+    <moveToSpamValidText>Письмо перемещено в папку «Спам». Отменить</moveToSpamValidText>
+    <extractFromSpamValidText>Письмо перемещено в папку «Входящие»</extractFromSpamValidText>
+    <sendLetterValidText>Ваше письмо отправлено. Перейти во Входящие</sendLetterValidText>
+</Parameters>
